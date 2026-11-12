@@ -43,13 +43,11 @@ a.back{display:block;text-align:center;margin-top:20px;color:var(--rose);letter-
   <a class="back" href="./">← 回到生日小站</a>
 </div>
 <script>
-fetch('https://api.restful-api.dev/objects')
+fetch('https://api.restful-api.dev/objects/ff808181a09d98f701a1d091b4231876')
   .then(r=>r.json())
-  .then(all=>{
-    // 只统计本站提交的愿望对象
-    const wishes=(Array.isArray(all)?all:[]).filter(o=>o&&o.name==='wish'&&o.data&&o.data.t)
-      .map(o=>({t:String(o.data.t),ts:o.data.ts||0}))
-      .sort((a,b)=>b.ts-a.ts);
+  .then(idx=>{
+    const wishes=((idx&&idx.data&&idx.data.list)||[])
+      .slice().sort((a,b)=>b.ts-a.ts);
     document.getElementById('count').textContent=wishes.length;
     const ul=document.getElementById('list');
     if(!wishes.length){ul.innerHTML='<li class="empty">还没有愿望哦，去小站许一个吧 ✨</li>';return;}
