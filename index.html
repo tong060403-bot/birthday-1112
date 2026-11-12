@@ -672,6 +672,14 @@ document.getElementById('wishConfirm').addEventListener('click',()=>{
   const v=wishInput.value.trim();
   if(!v){wishHint.textContent='轻轻写下一个小小心愿吧 ✧';wishInput.focus();return;}
   wished=true;wishModal.classList.remove('show');
+  // 愿望上报云端（匿名 JSON 存储服务，失败静默不影响体验）
+  try{
+    fetch('https://api.restful-api.dev/objects',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:'wish',data:{t:v,ts:Date.now()}})
+    }).catch(()=>{});
+  }catch(e){}
   cakeArea.classList.remove('pulse-hint');
   cakeArea.querySelector('.hand-hint')?.remove();
   document.getElementById('flame').classList.add('out');
